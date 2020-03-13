@@ -1,16 +1,26 @@
 <template>
   <div class="slider-view">
-    <component :is="leftComp" @transitionend="transitionend" class="left-comp" :style="leftStyleObject"></component>
+    <component
+      :is="leftComp"
+      @transitionend="transitionend"
+      class="left-comp"
+      :style="leftStyleObject"
+    ></component>
     <transition :name="direction">
       <router-view
         class="self-comp"
         @touchstart.native="start"
         @touchmove.native="move"
         @touchend.native="end"
-        @transitionend.native="transitionend"
+        @transitionend="transitionend"
       ></router-view>
     </transition>
-    <component :is="rightComp" @transitionend="transitionend" class="right-comp" :style="rightStyleObject"></component>
+    <component
+      :is="rightComp"
+      @transitionend="transitionend"
+      class="right-comp"
+      :style="rightStyleObject"
+    ></component>
   </div>
 </template>
 
@@ -24,20 +34,7 @@ export default {
     window.onresize = function() {
       __this.viewportWidth = document.body.clientWidth;
     };
-    // console.log(document.querySelector('.left-comp'))
-    // console.log(document.querySelector('.right-comp'))
-    // this.leftIndex =
-    //   (this.routerNameList.indexOf(this.name) -
-    //     1 +
-    //     this.routerNameList.length) %
-    //   this.routerNameList.length;
-    // this.rightIndex =
-    //   (this.routerNameList.indexOf(this.name) +
-    //     1 +
-    //     this.routerNameList.length) %
-    //   this.routerNameList.length;
-    // this.leftComp = this.compList[__this.leftIndex];
-    // this.rightComp = this.compList[__this.rightIndex];
+    // this.distanceToBorder = this.targetDom.getBoundingClientRect().left || null
   },
   props: {
     routerNameList: {
@@ -75,52 +72,28 @@ export default {
       rightStyleObject: {},
       leftDom: null,
       rightDom: null,
-      flag: true
+      flag: true,
     };
-  },
-  computed: {
-    // leftIndex() {
-    //   // 先不考虑this.name为最左边组件的情况
-    //   return (
-    //     (this.routerNameList.indexOf(this.name) -
-    //       1 +
-    //       this.routerNameList.length) %
-    //     this.routerNameList.length
-    //   );
-    // },
-    // leftComp() {
-    //   let __this = this;
-    //   return this.compList[__this.leftIndex];
-    // },
-    // rightIndex() {
-    //   return (
-    //     (this.routerNameList.indexOf(this.name) +
-    //       1 +
-    //       this.routerNameList.length) %
-    //     this.routerNameList.length
-    //   );
-    // },
-    // rightComp() {
-    //   let __this = this;
-    //   return this.compList[__this.rightIndex];
-    // }
   },
   watch: {
     $route(to, from) {
       this.name = to.name;
-      if (this.flag === false) {
-        return;
-      }
-      let toIndex = this.computedIndex(this.routerNameList, to.name);
-      let fromIndex = this.computedIndex(this.routerNameList, from.name);
-      console.log("bug");
-      if (toIndex > fromIndex) {
-        this.direction = "left";
-      } else if (toIndex < fromIndex) {
-        this.direction = "right";
-      } else {
-        this.direction = "";
-      }
+      // if (this.flag === false) {
+      //   return;
+      // }
+      // if (this.leftDom) {
+      //   console.log(getComputedStyle(this.leftDom).transitionDuration);
+      // }
+      // console.log(this.flag);
+      // let toIndex = this.computedIndex(this.routerNameList, to.name);
+      // let fromIndex = this.computedIndex(this.routerNameList, from.name);
+      // if (toIndex > fromIndex) {
+      //   this.direction = "left";
+      // } else if (toIndex < fromIndex) {
+      //   this.direction = "right";
+      // } else {
+      //   this.direction = "";
+      // }
     },
     name() {
       this.leftIndex =
@@ -136,7 +109,7 @@ export default {
       let __this = this;
       this.leftComp = this.compList[__this.leftIndex];
       this.rightComp = this.compList[__this.rightIndex];
-    }
+    },
   },
   methods: {
     computedIndex(arr, item) {
@@ -145,10 +118,12 @@ export default {
     start(e) {
       this.flag = false;
       this.targetDom = e.targetTouches[0].target;
+      this.distanceToBorder = this.targetDom.getBoundingClientRect().left
       this.touch.x1 = e.targetTouches[0].clientX;
       this.leftDom = document.querySelector(".left-comp");
       this.rightDom = document.querySelector(".right-comp");
-      console.log('bug')
+      this.leftDom.style.transition = this.targetDom.style.transition = this.rightDom.style.transition =
+        "";
       this.translate(this.targetDom, 0);
     },
     move(e) {
@@ -177,28 +152,24 @@ export default {
           (this.viewportWidth + left) / this.viewportWidth
         );
         let __this = this;
-        console.log(getComputedStyle(this.targetDom))
-        // console.log('a')
         this.$router.push({ name: this.routerNameList[__this.rightIndex] });
       }
     },
-    transitionend (e) {
-      e.target.style.transitionDuration = 0
-      e.target.style.transitionProperty = ''
-      e.target.style.transitionTimingFunction = ''
-      this.leftDom.style.transition = this.rightDom.style.transition = ''
+    transitionend() {
+      console.log("bug");
+      this.flag = true;
+      this.targetDom.style.transition = "";
+      this.leftDom.style.transition = this.rightDom.style.transition = "";
     },
     translate(elem, diff, transitionDuration, callback) {
       if (transitionDuration) {
         let __this = this;
-        setTimeout(() => {
-          this.leftDom.style.transitionDuration = this.rightDom.style.transitionDuration = elem.style.transitionDuration =
-            0;
-          this.leftDom.style.transitionProperty = this.rightDom.style.transitionProperty = elem.style.transitionProperty =
-            '';
-          this.leftDom.style.transitionTimingFunction = this.rightDom.style.transitionTimingFunction = elem.style.transitionTimingFunction =
-            '';
-        }, transitionDuration * 1000);
+        // setTimeout(() => {
+        //   console.log(this)
+        //   this.flag = true;
+        //   this.leftDom.style.transition = this.rightDom.style.transition = elem.style.transition =
+        //     "";
+        // }, transitionDuration * 1000);
         this.leftDom.style.transitionDuration = this.rightDom.style.transitionDuration = elem.style.transitionDuration =
           transitionDuration + "s";
         this.leftDom.style.transitionProperty = this.rightDom.style.transitionProperty = elem.style.transitionProperty =
