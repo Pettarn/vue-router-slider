@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import SliderView from "./lib/SliderView";
+// import SliderView from "./lib/SliderView";
 import Item1 from './components/item1'
 import Item2 from './components/item2'
 import Item3 from './components/item3'
 
 export default {
-  components: {
-    SliderView
-  },
+  // components: {
+  //   SliderView
+  // },
   data() {
     return {
       selected: "item1",
