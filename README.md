@@ -1,18 +1,30 @@
 # vue-router-slider
 
-> A Vue.js project
+> A component for Vue that can slide viewport from left/right to right/left to change router.
 
-## Build Setup
+## Install
+      yarn add @pettarn/vue-router-slider --dev
 
-``` bash
-# install dependencies
-npm install
+## Usage
 
-# serve with hot reload at localhost:8080
-npm run dev
+main.js:
 
-# build for production with minification
-npm run build
-```
+      import SliderView from '@pettarn/vue-router-slider'
+      Vue.use(SliderView)
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+xxx.vue:
+
+      <template>
+      ...
+        <slider-view
+          v-model="selected"
+          :routerPathList="routerPathList"
+          :routerNameList="routerNameList"
+          :compList="compList"
+        ></slider-view>
+      ...
+      </template>
+
+## 注
+It has been registered globally in `vue.use`, so it is not necessary to register components in `xxx.vue` file.
+
