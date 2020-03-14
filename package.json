@@ -3,6 +3,7 @@
   "description": "A Vue.js project",
   "version": "1.0.1",
   "author": "Pettarn <1225076678@qq.com>",
+  "main": "dist/VueRouterSlider.umd.js",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
+    "@pettarn/vue-router-slider": "^1.0.1",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
