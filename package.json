@@ -1,7 +1,7 @@
 {
   "name": "@pettarn/vue-router-slider",
   "description": "A Vue.js project",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Pettarn <1225076678@qq.com>",
   "main": "dist/VueRouterSlider.umd.js",
   "license": "MIT",
