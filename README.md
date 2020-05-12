@@ -1,3 +1,5 @@
+![演示](https://github.com/Pettarn/vue-router-slider/blob/master/gif/router_slider_demo.gif?raw=true)
+
 # vue-router-slider
 
 > A component for Vue that can slide viewport from left/right to right/left to change router.
